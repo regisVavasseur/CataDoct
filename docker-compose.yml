@@ -9,6 +9,8 @@ services:
     image: 'canals/php:latest'
     depends_on:
       - db.catadoct
+    volumes:
+      - ./:/var/www
     networks:
       - catadoct.net
 
