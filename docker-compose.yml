@@ -1,20 +1,33 @@
 version: '3'
 
+networks:
+  catadoct.net:
+    driver: bridge
+
 services:
   php:
     image: 'canals/php:latest'
     depends_on:
-      - db
+      - db.catadoct
+    networks:
+      - catadoct.net
 
-  db:
-    image: postgres
-    command: '--default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci'
+  db.catadoct:
+    image: "postgres:latest"
+    env_file:
+      - db.env
     ports:
-      - '11111:3306'
+      - '11111:5432'
+    volumes:
+      - ./sql:/var/sql'
+    networks:
+      - catadoct.net
 
   adminer:
     image: adminer
     env_file: ./db.env
-    command: php -S
+    command: php -S 0.0.0.0:8080 -t /var/www/html
     ports:
       - '11112:8080'
+    networks:
+      - catadoct.net
