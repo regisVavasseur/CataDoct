@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  php:
+    image: 'canals/php:latest'
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    command: '--default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci'
+    ports:
+      - '11111:3306'
+
+  adminer:
+    image: adminer
+    env_file: ./db.env
+    command: php -S
+    ports:
+      - '11112:8080'
