@@ -6,19 +6,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "categorie")]
-class Categorie
+#[ORM\Table(name: "taille")]
+class Taille
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', length: 255)]
     private string $libelle;
 
-    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Produit::class)]
-    private Collection $produits;
+    #[ORM\OneToMany(mappedBy: 'taille', targetEntity: Tarif::class)]
+    private Collection $tarifs;
 
     public function getId(): int
     {
@@ -35,13 +35,9 @@ class Categorie
         $this->libelle = $libelle;
     }
 
-    public function getProduits(): Collection
+    public function getTarifs(): Collection
     {
-        return $this->produits;
+        return $this->tarifs;
     }
 
-    public function setProduits(Collection $produits): void
-    {
-        $this->produits = $produits;
-    }
 }

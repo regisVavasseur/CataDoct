@@ -6,29 +6,29 @@ networks:
 
 services:
   php:
-    image: 'canals/php:latest'
+    image: 'canals/php:8.2'
     depends_on:
       - db.catadoct
     volumes:
-      - ./:/var/www
+      - ./:/var/www/html
     networks:
       - catadoct.net
+    ports:
+      - '11110:80'
 
   db.catadoct:
     image: "postgres:latest"
     env_file:
       - db.env
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
     ports:
       - '11111:5432'
-    volumes:
-      - ./sql:/var/sql'
     networks:
       - catadoct.net
 
   adminer:
     image: adminer
-    env_file: ./db.env
-    command: php -S 0.0.0.0:8080 -t /var/www/html
     ports:
       - '11112:8080'
     networks:
